@@ -8,6 +8,34 @@ def decode(s):
 			dcd += i
 	return dcd
 
+#выбор команды для использования
+def oneComm(s):
+	txt = ''
+	txt = s[0]
+	for i in range(len(s)-1):
+		i += 1
+		if(len(txt) > len(s[i])):
+			txt = s[i]
+	return txt
+
+#сравнение количества команд
+def sravn(s):
+	if(len(s) < 2):
+		return True #А вот что вернуть то???
+	j = 0
+	cmm = ''
+	cmm = s[0,j]
+	ex = False
+	o = 1
+	for i in s[o]:
+		if(cmm == i):
+			ex = sravn(s.pop(o))
+		if(ex):
+			j += 1
+			cmm = s[0,j]
+
+
+
 code = 'WSADE0123'
 codeList = []
 for i in range(len(code)):
@@ -17,12 +45,12 @@ command = input('Введите команды Копатыча: ')
 dCommand = ''
 dCommList = []
 clCommand = []
-txt = ''
+
 print()
 
 #создание трех отправленных команд
 for o in range(3):
-	
+
 	#создание помех в команде
 	i = 0
 	while (i < (len(command))):
@@ -33,7 +61,7 @@ for o in range(3):
 			dCommand += chr(random.randint(65, 122))
 		dCommand += command[i]
 		i += 1
-		
+
 	dCommList.append(dCommand)
 	print(f'Строка с помехами №{o}: {dCommand}')
 	dCommand = ''
@@ -45,13 +73,5 @@ for i in range(len(dCommList)):
 	clCommand.append(decode(dCommList[i]))
 	print(f'Очищенная строка №{i}: {clCommand[i]}')
 
-#выбор команды для использования
-txt = clCommand[0] 
-
-for i in range(len(clCommand)-1):
-	i += 1
-	if(len(txt) > len(clCommand[i])):
-		txt = clCommand[i]
-		
-print(f'\nВыбранная для исполнения команда: ', txt)
+print(f'\nВыбранная для исполнения команда: {oneComm(clCommand)}')
 input()
