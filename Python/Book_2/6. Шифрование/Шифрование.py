@@ -1,3 +1,4 @@
+# открывает или создает файл
 def openFile(filename):
     ret = ''
 
@@ -14,7 +15,7 @@ def openFile(filename):
         saveFile(ret, filename)
 
     return ret
-
+# сохраняет файл
 def saveFile(text ,filename):
     try:
         f = open(filename, 'w', encoding='UTF-8')
@@ -22,16 +23,54 @@ def saveFile(text ,filename):
         f.close()
     except:
         print('Ошибка создания файла.')
+# шифрование с добавлением к коду символа числа от 1 до 9
+def cryptCesar(line):
+    ret = ''
 
+    count = 1
+    for i in line:
+        ret += chr(ord(i) + (count % 10))
+        count += 1
+
+    return ret
+#шифрование с использованием метода перестановки
+def cryptTransp(line, code):
+    return 0
+#проверка на то, что ввели число
+def isDigit(text):
+    num = ''
+    while(not num.isdigit() or '0' in num):
+        num = input(text)
+        if (not num.isdigit() or '0' in num):
+            print(f'Вы ввели {num}. Это какой-то сучий текст! {text}')
+    num = int(num)
+
+    return num
 
 stroka = openFile('forcrypt.txt')
-SHstroka = ''
 
-# шифрование с добавлением к коду символа числа от 1 до 9
-code = 1
-for i in stroka:
-    SHstroka += chr(ord(i) + (code % 10))
-    code += 1
+'''
+добавить в isDigit необязательный параметр [, res]
+для проверки шифра, цифры не повторяются и лежат в диапазоне
+
+lenKey = isDigit('Введите длину ключа шифрования: ')
+cryptKeyStr = str(isDigit(f'Введите ключ шифрования, используя цифры от 1 до {lenKey} без повторов: '))
+
+cryptKey = []
+unCryptKey = []
+
+for j in cryptKeyStr:       #записывает в список ЧИСЛА
+    cryptKey.append(int(j))
+
+for i in range(len(cryptKey)):      #делает ключ для расшифрования
+    adda = cryptKey.index(i+1) + 1
+    unCryptKey.append(adda)
+'''
+
+cryptKey = [3,5,1,6,4,2]
+unCryptKey = [3,6,1,5,2,4]
+SHstroka = cryptCesar(stroka)
+
 
 print(f'Строка, которую нужно зашифровать: {stroka}')
 print(f'Зашифрованная строка: {SHstroka}')

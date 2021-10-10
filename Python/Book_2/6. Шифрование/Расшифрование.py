@@ -1,5 +1,4 @@
-#import Шифрование
-
+# открывает или создает файл
 def openFile(filename):
     ret = ''
 
@@ -19,7 +18,7 @@ def openFile(filename):
         ret = openFile(filename)
 
     return ret
-
+# сохраняет файл
 def saveFile(text ,filename):
     try:
         f = open(filename, 'w', encoding='UTF-8')
@@ -27,16 +26,21 @@ def saveFile(text ,filename):
         f.close()
     except:
         print('Ошибка создания файла.')
+# расшифрование с вычитанием из кода символа числа от 1 до 9
+def unCryptCesar(line):
+    ret = ''
 
+    count = 1
+    for i in line:
+        ret += chr(ord(i) - (count % 10))
+        count += 1
+
+    return ret
 
 SHstroka = openFile('crypt.txt')
-stroka = ''
+stroka = unCryptCesar(SHstroka)
 
-# шифрование с добавлением к коду символа числа от 1 до 9
-code = 1
-for i in SHstroka:
-    stroka += chr(ord(i) - (code % 10))
-    code += 1
+
 
 print(f'Строка, которую нужно расшифровать: {SHstroka}')
 print(f'Расшифрованная строка: {stroka}')
