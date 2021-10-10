@@ -42,5 +42,3 @@ print(f'Строка, которую нужно расшифровать: {SHstr
 print(f'Расшифрованная строка: {stroka}')
 
 saveFile(stroka, 'encrypt.txt')
-
-input()

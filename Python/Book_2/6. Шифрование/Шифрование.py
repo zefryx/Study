@@ -37,5 +37,3 @@ print(f'Строка, которую нужно зашифровать: {stroka}
 print(f'Зашифрованная строка: {SHstroka}')
 
 saveFile(SHstroka, 'crypt.txt')
-
-input()

@@ -68,5 +68,3 @@ for i in range(len(journal)):
     print(f'{journal[i][0]}, средний балл: {getAverage(journal[i])}')
 
 saveToFile(getStringToFile(journal), 'average.dat')
-
-input()

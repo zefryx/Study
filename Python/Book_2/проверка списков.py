@@ -151,5 +151,3 @@ while (not res1):
         res1 = True
 
 printList2D(a)
-
-input()
