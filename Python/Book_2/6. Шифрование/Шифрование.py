@@ -65,6 +65,31 @@ for j in cryptKeyStr:       #записывает в список ЧИСЛА
 for i in range(len(cryptKey)):      #делает ключ для расшифрования
     adda = cryptKey.index(i+1) + 1
     unCryptKey.append(adda)
+
+
+text = "Hello world."
+crText = ""
+unCrText = ""
+
+count = 0
+cryptKey = [3, 5, 1, 4, 6, 2]
+unCryptKey = [3, 6, 1, 4, 2, 5]
+
+for j in range(1, round(len(text)/len(cryptKey))+1):
+	for i in cryptKey:
+		crText += text[(i -1) + count]
+	count += 6
+
+count = 0
+
+for j in range(1, round(len(crText)/len(unCryptKey))+1):
+	for i in unCryptKey:
+		unCrText += crText[(i -1) + count]
+	count += 6
+
+print(text)	
+print(crText)
+print(unCrText)
 '''
 
 cryptKey = [3,5,1,6,4,2]
