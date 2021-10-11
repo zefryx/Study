@@ -90,6 +90,37 @@ for j in range(1, round(len(crText)/len(unCryptKey))+1):
 print(text)	
 print(crText)
 print(unCrText)
+
+
+def isDigit(text, res = False):
+    
+    num = ''
+    while(not num.isdigit() or '0' in num):
+        num = input(text)
+        if (not num.isdigit() or '0' in num):
+            print(f'Вы ввели {num}. Это какой-то сучий текст! {text}')
+    num = int(num)
+    
+    if res:
+    	if (proverka(num, text)):
+    
+   		 return num
+
+def proverka(x, text):
+	
+	for i in str(x):
+		if (int(i) > y or int(i) < 0):
+			print('Неправильно')
+			isDigit(text, True)
+	return True
+		
+y = 3
+
+x = isDigit(f'Введите числа от 1 до {y} : ', True)
+
+print(x)
+		
+	
 '''
 
 cryptKey = [3,5,1,6,4,2]
