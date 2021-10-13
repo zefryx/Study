@@ -4,7 +4,7 @@ def fib(x, y, i):
         i += 1
         y += fib(y, x + y, i)
     return y
-		
+
 
 n = 10
 print('0')

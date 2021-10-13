@@ -3,7 +3,7 @@ def fact(x):
         return 1
     x = x * fact(x - 1)
     return x
-		
+
 
 n = 5
-print('Fact = ', fact(n))
+print(f'Fact {n} = ', fact(n))
