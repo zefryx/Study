@@ -1,10 +1,51 @@
 from tkinter import *
 
 def goCode():
-    return 0
+    tOutput.delete(1.0, END)
+    tIn = tInput.get(1.0, END)
+    tIn = tIn[0:len(tIn) - 1]
+    Len = len(tIn)
+    tOut = ''
+
+    if (rBtn.get() == 0):
+        for i in range(Len - 1, -1, -1):
+            tOut += tIn[i]
+    if (rBtn.get() == 1):
+        for i in range(0, Len - 1, 2):
+            tOut += tIn[i + 1] + tIn[i]
+        if (Len % 2 != 0):
+            tOut += tIn[Len - 1]
+    if (rBtn.get() == 2):
+        for i in range(Len):
+            tOut += chr(ord(tIn[i]) + 1)
+    if (rBtn.get() == 3):
+        p = 0
+        for i in range(Len):
+            tOut += chr(ord(tIn[i]) + p)
+            p = (p + 1) % 33
+
+    tOutput.insert(1.0, tOut)
 
 def goDecode():
-    return 0
+    if (rBtn.get() == 0 or rBtn.get() == 1):
+        goCode()
+    else:
+        tOutput.delete(1.0, END)
+        tIn = tInput.get(1.0, END)
+        tIn = tIn[0:len(tIn) - 1]
+        Len = len(tIn)
+        tOut = ''
+
+        if (rBtn.get() == 2):
+            for i in range(Len):
+                tOut += chr(ord(tIn[i]) - 1)
+        if (rBtn.get() == 3):
+            p = 0
+            for i in range(Len):
+                tOut += chr(ord(tIn[i]) - p)
+                p = (p + 1) % 33
+
+        tOutput.insert(1.0, tOut)
 
 def copyToClipboard():
     root.clipboard_clear();
