@@ -22,7 +22,7 @@ result = 0              #выйгранные или проигранные де
 stavka = 0              #ставка
 
 #вывод приветственной шапки
-def colorLine(c, s):                
+def colorLine(c, s):
     os.system('clear')                #очистка экрана командной строки
     color(c)
     print('*' * (len(s) + 2))         #len() возвращает длину строки в символах
@@ -30,7 +30,7 @@ def colorLine(c, s):
     print('*' * (len(s) + 2))
 
 #функция выбора игры
-def getInput(digit, message):       
+def getInput(digit, message):
     color(7)
     ret = ''
     while(ret == '' or not ret in digit):
@@ -38,7 +38,7 @@ def getInput(digit, message):
     return ret
 
 #функия ввода ставки и приветствие в конкретной игре
-def getIntInput(minimum, maximum, message):     
+def getIntInput(minimum, maximum, message):
     color(7)
     ret = -1
     while(ret < minimum or ret > maximum):
@@ -99,7 +99,7 @@ def getRoulette(visible):
         col += 1    #выбор цвета сообщения
         if(col > 15):
             col = 1
-            
+
         mainTime += tickTime    #увеличение времени
         tickTime *= increaseTickTime
 
@@ -125,7 +125,7 @@ def getRoulette(visible):
             time.sleep(mainTime)
 
     return number
-       
+
 #функция Рулетки
 def roulette():
     global money
@@ -178,7 +178,7 @@ def roulette():
 
             if(stavka == 0):    #если ставка 0 - выход из игры в главное меню
                 return 0
-            
+
             number = getRoulette(True) #анимация рулетки плюс рандом числа
 
             print()
@@ -193,7 +193,7 @@ def roulette():
                 print(f'Выпало число {printNumber}!')
 
             #результаты игры
-            if(x == '1'): 
+            if(x == '1'):
                 print('    Ваша ставка на ЧЕТНОЕ!')
                 if(number < 37 and number % 2 == 0):
                     money += stavka
@@ -280,7 +280,7 @@ def dice():
         while (playRound and stavka > 0 and money > 0):     #цикл раунда
             if(stavka > money):
                 stavka = money
-                
+
             color(11)
             print(f'\n    В Вашем распоряжении {stavka} {valuta}')
             color(12)
@@ -300,7 +300,7 @@ def dice():
                 diceResult = getDice()  #бросаем кости
 
                 win = (oldResult < diceResult and x == '1') or (oldResult > diceResult and x == '2')    #смотрим, победил ли игрок
-                
+
                 if(not x == '3'):   #определяем результат игры
                     if(win):
                         money += stavka + stavka // 5
@@ -324,7 +324,7 @@ def dice():
                 if(firstPlay):
                     money -= stavka
                 playRound = False
-    
+
 #однорукий Бандит
 def bandit():
     global money
@@ -348,12 +348,12 @@ def bandit():
             return 0
 
         money -= stavka #списали ставку
-        
+
         money += getBandit(stavka) #прибавили выйгрыш
 
         if(money <= 0):
             playBandit = False
-    
+
 #анимация
 def getBandit(stavka):
     res = stavka
@@ -412,7 +412,7 @@ def getBandit(stavka):
         if(col > 15):
             col = 10
 
-        os.system('clear')                #очистка экрана командной строки
+        os.system('cls')                #очистка экрана командной строки
 
         print('><' * 9)
         print(f'    {d1} {d2} {d3} {d4} {d5}')
@@ -472,7 +472,7 @@ def main():
     global money, playGame  #определяем глобальные переменные
     money = loadMoney()     #загружаем деньги из файла
     startMoney = money
-    
+
     while(money > 0 and playGame):  #главный цикл игры
         colorLine(10, 'Приветствую тебя в казино, дружище!')
         color(14)
