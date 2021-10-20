@@ -29,11 +29,7 @@ def printLab():
             elif (map[i][j] == -1):     # -1 стена
                 print(wall, end='')
             elif (map[i][j] > 1):
-                #print(f' . ', end='') # остальное убрать
-                if (map[i][j] < 10):
-                    print(f' {map[i][j]} ', end='')
-                else:
-                    print(f' {map[i][j]}', end='')
+                print(f' . ', end='') # остальное убрать
             else:                       # все остальное - проход
                 print(path, end='')
         print()
@@ -56,97 +52,34 @@ def searchCoordIndex(a):
     return Coord
 
 # поиск координат пути
-def searchCoord(a):
-    c = finish.copy()
+def searchWay(a, x, y):
+    res = []
+    res.append([x, y])
 
-    ret = []
-    ret.append(c)
+    if (a[x + 1][y] == a[x][y] - 1):
+        return res + searchWay(a, x + 1, y)
+    if (a[x][y + 1] == a[x][y] - 1):
+        return res + searchWay(a, x, y + 1)
+    if (a[x - 1][y] == a[x][y] - 1):
+        return res + searchWay(a, x - 1, y)
+    if (a[x][y - 1] == a[x][y] - 1):
+        return res + searchWay(a, x, y - 1)
 
-    i = 0
-    while(ret[i] != start):
-
-        if (map[ret[i][0] + 1][ret[i][1]] == a - 1):
-            ret.append([ret[i][0] + 1, ret[i][1]])
-        elif (map[ret[i][0]][ret[i][1] + 1] == a - 1):
-            ret.append([ret[i][0], ret[i][1] + 1])
-        elif (map[ret[i][0] - 1][ret[i][1]] == a - 1):
-            ret.append([ret[i][0] - 1, ret[i][1]])
-        elif (map[ret[i][0]][ret[i][1] - 1] == a - 1):
-            ret.append([ret[i][0], ret[i][1] - 1])
-        i += 1
-        a -= 1
-
-    return ret
+    return res
 
 # движение по лабиринту
-def move():
-# переменная для копирования значений координат
-    c = start.copy()
-# текущая позиция на карте, или откуда еще доступен путь
-    actPos = []
-    actPos.append(c)
-# найден ли выход
-    exit = False
-# основной цикл поиска пути
-    i = 0
-    while (not exit):
-# если тупик - True
-        lock = False
-# проход по одной ветке, i++ по следующей ветви
-        while (not lock and not exit):
-# очистка экрана от лишнего
-            os.system('cls')
-# счетчик, сколько вариантов пути есть с клетки
-            count = 0
-            if (map[actPos[i][0] + 1][actPos[i][1]] == 0):
-                count += 1
-            if (map[actPos[i][0]][actPos[i][1] + 1] == 0):
-                count += 1
-            if (map[actPos[i][0] - 1][actPos[i][1]] == 0):
-                count += 1
-            if (map[actPos[i][0]][actPos[i][1] - 1] == 0):
-                count += 1
-# если путей нет - тупик, переход к следующей ветви пути
-            if (count == 0):
-                lock = True
-            else:
-# запись координат, если есть дополнительные ветви пути
-                for j in range(1, count):
-                    c = actPos[i].copy()
-                    actPos.append(c)
-# условия прохождения лабиринта
-                if (map[actPos[i][0] + 1][actPos[i][1]] == 0):    # движение вниз
-                    map[actPos[i][0] + 1][actPos[i][1]] += 1 + map[actPos[i][0]][actPos[i][1]]
-                    actPos[i][0] += 1
-                elif (map[actPos[i][0] - 1][actPos[i][1]] == 0):    # движение вверх
-                    map[actPos[i][0] - 1][actPos[i][1]] += 1 + map[actPos[i][0]][actPos[i][1]]
-                    actPos[i][0] -= 1
-                elif (map[actPos[i][0]][actPos[i][1] + 1] == 0):    # движение вправо
-                    map[actPos[i][0]][actPos[i][1] + 1] += 1 + map[actPos[i][0]][actPos[i][1]]
-                    actPos[i][1] += 1
-                elif (map[actPos[i][0]][actPos[i][1] - 1] == 0):    # движение влево
-                    map[actPos[i][0]][actPos[i][1] - 1] += 1 + map[actPos[i][0]][actPos[i][1]]
-                    actPos[i][1] -= 1
-# печать пути лабиринта
-            printLab()
-#            print('\n\n')
-#            printList2D(map)
-# найден ли финиш
-            if ((map[actPos[i][0] + 1][actPos[i][1]] or\
-                 map[actPos[i][0]][actPos[i][1] + 1] or\
-                 map[actPos[i][0] - 1][actPos[i][1]] or\
-                 map[actPos[i][0]][actPos[i][1] - 1]) == 'F'):
-                exit = True
-                stepLab = map[actPos[i][0]][actPos[i][1]] + 1
-                print('Выход найден!')
-                print(f'Минимальное количество ходов, для достижения выхода = {stepLab}')
-                wayCoord = searchCoord(stepLab)
-                wayCoord.reverse()
-                print('Координаты пути:')
-                printList2D(wayCoord)
-# пауза,для плавности печати
-#            time.sleep(0.00005)
-        i += 1
+def move(a, x, y, number):
+
+    a[x][y] = number
+
+    if (a[x + 1][y] == 0):
+        move(a, x + 1, y, number + 1)
+    if (a[x][y + 1] == 0):
+        move(a, x, y + 1, number + 1)
+    if (a[x - 1][y] == 0):
+        move(a, x - 1, y, number + 1)
+    if (a[x][y - 1] == 0):
+        move(a, x, y - 1, number + 1)
 
 map = [[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
        [-1,  1, -1,  0,  0,  0, -1,  0,  0,  0, -1],
@@ -155,15 +88,25 @@ map = [[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
        [-1,  0, -1,  0, -1, -1, -1, -1, -1,  0, -1],
        [-1,  0, -1,  0,  0,  0,  0,  0, -1,  0, -1],
        [-1,  0, -1, -1, -1, -1, -1, -1, -1,  0, -1],
-       [-1,  0,  0,  0,  0,  0,  0,  0, -1,'F', -1],
+       [-1,  0,  0,  0,  0,  0,  0,  0, -1,  0, -1],
        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]]
 
 start = searchCoordIndex(1)     # 1 - старт
-finish = searchCoordIndex('F')  # F - финиш
+finish = [7, 9]  # F - финиш
 
 wall = '|||'
 path = '   '
+print('Лабиринт до:')
+printLab()
 
-#printLab()
-#printList2D(map)
-move()
+move(map, start[0], start[1], map[start[0]][start[1]])
+
+print('Лабиринт после:')
+printLab()
+print(f'Выход найден\nМинимальное количество ходов, для достижения выхода = {map[7][9]}')
+
+road = searchWay(map, finish[0], finish[1])
+road.reverse()
+print('Координаты пути:')
+for i in road:
+    print(i)
