@@ -25,11 +25,9 @@ def pressKey(event):
     # отсеиваем нажатые клавиши типа Ctrl, Shift, Alt
     if (len(ch) == 0):
         return 0
-    # получаем порядковый номер нажатой клавиши в алфавите
-    codeBtn = ord(ch) - st
-    # если номер буквы лежит в пределах - вызываем метода
-    if (0 <= codeBtn <= 32):
-        pressLetter(codeBtn)
+    # если символ есть в алфавите - вызываем метод
+    if (ch in alphabetRU):
+        pressLetter(alphabetRU.index(ch))
 
 # обновление информации на экране
 def updateInfo():
@@ -129,7 +127,7 @@ def pressLetter(n):
     # временная переменная
     oldWordStar = wordStar
     # получаем строку с открытыми символами
-    wordStar = getWordStar(chr(st + n))
+    wordStar = getWordStar(alphabetRU[n])
     # находим различие между старым и новым словом oldWordStar и wordStar (сколько букв в слове угадал)
     count = compareWord(wordStar, oldWordStar)
     # обновляем виджет с загаданным словом
@@ -171,7 +169,15 @@ def pressLetter(n):
         startNewRound()
     # если закончилось количество попыток
     elif (userTry <= 0):
-        messagebox.showinfo('Проигрыш', 'У Вас не осталось попыток. Игра окончена.')
+        if (score > 100):
+            ques = messagebox.askyesno('Проигрыш', 'У Вас не осталось попыток. Игра окончена.\n\
+Хотите продолжить потратив 100 очков?')
+            if (ques):
+                score -= 100
+                startNewRound()
+                return
+        else:
+            messagebox.showinfo('Проигрыш', 'У Вас не осталось попыток. Игра окончена.')
         quit(0)
 
 # старт нового раунда
@@ -198,8 +204,8 @@ def startNewRound():
     updateInfo()
 
     # возвращаем кнопки к нормальному виду
-    for i in range(32):
-        btn[i]['text'] = f'{chr(st+i)}'
+    for i in range(len(alphabetRU)):
+        btn[i]['text'] = f'{alphabetRU[i]}'
         btn[i]['state'] = 'normal'
 
 # создание окна
@@ -241,13 +247,13 @@ score = 0
 topScore = getTopScore()
 # количество попыток
 userTry = 0 # добавить 3 редима игры, от которых зависит количество попыток и очки, при кгадывании буквы
-# стартовый символ
-st = ord('А')
+# алфавит с символами
+alphabetRU = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
 # список с кнопками
 btn = []
 # заполнение списка кнопками
-for i in range(32): # 32 потому что без Ё
-    btn.append(Button(text=chr(st+i), width=2, font='consolas 15'))
+for i in range(len(alphabetRU)): # 32 потому что без ord('Ё') = 1025
+    btn.append(Button(text=alphabetRU[i], width=2, font='consolas 15'))
     btn[i].place(x = 215 + i % 11 * 35, y = 150 + i // 11 * 50)
     btn[i]['command'] = lambda x = i: pressLetter(x)
 
