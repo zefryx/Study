@@ -1,3 +1,4 @@
+
 import random
 
 for i in range(ord('а'), ord('я') + 1, 1):
