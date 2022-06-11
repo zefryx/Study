@@ -1,4 +1,4 @@
-# работает!
+# работает!  d
 import asyncio
 import sys
 
