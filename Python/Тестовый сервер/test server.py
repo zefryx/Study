@@ -35,6 +35,11 @@ async def serve_client(reader, writer):
 # прием данных от клиента
 async def read_request(reader, writer, cli_address, cid, delimiter=b'!'):
     request = bytearray()
+
+    # что бы при запросе серверу он сразу отсылал ответ
+    writer.write(request + b'\r\n')
+    await writer.drain()
+
     # бесконечны цикл приема данных
     while True:
         # чтение строки
@@ -42,9 +47,15 @@ async def read_request(reader, writer, cli_address, cid, delimiter=b'!'):
         # убираем \r\n в конце приннимаемой строки
         chunk = chunk.rstrip()
 
-        print('Получено %r от %r' % (chunk, cli_address))
+        print('Получено %r от клиента %r' % (chunk, cli_address))
 
-        cli_echo(chunk, writer)
+        request += chunk
+        writer.write(request + b'\r\n')
+        await writer.drain()
+
+        print('Отправлено %r клиенту %r' % (request, cli_address))
+
+        request.clear()
 
         if not chunk:
           # Клиент преждевременно отключился, переход к if request is None:
@@ -70,8 +81,6 @@ async def write_response(writer, response, cid):
     print(f'Клиент #{cid} был обслужен')
 
 
-def cli_echo(chunk, writer):
-    return
 
 # номер входяего клиента
 counter = 0
