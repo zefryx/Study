@@ -41,7 +41,7 @@ elif(diff == 2):
 elif(diff == 3):
     minDiap = -999
     maxDiap = 999
-        
+
 while (game):
 
     sign = int(random.randint(0,3))                 #генерирует тип операции
@@ -96,17 +96,17 @@ while (game):
             result = input(f'Введено {result}, это не число. Нужно ввести число.')
         elif(abs(int(result)) > 0):
             break
-        
+
     if(result.upper() == 'ВЫХОД' or result.upper() == 'STOP'):
         game = False
 
-    if(game == True):    
+    if(game == True):
         if(int(result) == int(z)):
             score += 10
             right += 1
             count +=1
             qua = input(f'Правильно! Набрано {score} очков. Продолжим? ')
-        
+
             if(qua.upper() == 'ВЫХОД' or qua.upper() == 'STOP'):
                 game = False
 
@@ -116,7 +116,7 @@ while (game):
             if(score < 0):
                 score = 0
             qua = input(f'\nНеравильно! Ответ {z}. Набрано {score} очков. Продолжим? ')
-        
+
             if(qua.upper() == 'ВЫХОД' or qua.upper() == 'STOP'):
                 game = False
 
@@ -125,5 +125,3 @@ if(count > 0):
     print(f'Процент правильных ответов {count / right * 100}%')
 else:
     print(f'Процент правильных ответов 0%')
-
-        
