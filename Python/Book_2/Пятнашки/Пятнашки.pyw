@@ -18,7 +18,31 @@ from winsound import Beep
 
 # срабатывает после нажатия на кнопку Старт
 def start_new_round():
-    print('Нажата кнопка СТАРТ')
+    # деактивируем все ненужные виджеты
+    start_button['state'] = DISABLED
+    radio01['state'] = DISABLED
+    radio02['state'] = DISABLED
+    diff_combobox['state'] = DISABLED
+
+    # проигрываем мелодию
+    Beep(294, 125)
+
+# задача - оформить данный цикл без break (while)
+# задача - избавиться от циклов поиска пустой клетки
+    # метод поиска пустого поля
+    x = 0
+    y = 0
+    for i in range(n):
+        for j in range(m):
+            if data_image[i][j] == black_img:
+                x = i
+                y = j
+                break
+
+    # запускаем метод перемешивания поля
+    shuffle_pictures(x, y)
+
+    # print('Нажата кнопка СТАРТ')
 
 # перемешивает спрайты (x,y - координаты пустого спрайта)
 def shuffle_pictures(x, y):
@@ -54,7 +78,7 @@ def refresh_text():
 # увелиивает количество сделанных ходов
 # проверяет собран ли паззл
 def go(x, y):
-    return 0
+    print(f'Пришли координаты x - {x}, y - {y}')
 
 # показыавет, как должен выглядеть собранный паззл
 # зажата кнопка Посмотреть
@@ -69,7 +93,12 @@ def see_end(event):
 
 # выбор рисунка для игры
 def is_check_image():
-    return 0
+    if image.get():
+        image_background = image_background01
+        print('Выбран Зеленый скин')
+    elif not image.get():
+        image_background = image_background02
+        print('Выбран Голубой скин')
 
 # победоносная музычка
 def music():
@@ -148,14 +177,49 @@ image = BooleanVar()
 image.set(True)
 
 # создаем переключатель и привязываем переменную image
-radio01 = Radiobutton(root, text='Скин 1', variable=image, value=True, activebackground=back, bg=back, fg=fore)
+radio01 = Radiobutton(root, text='Зеленый', variable=image, value=True, activebackground=back, bg=back, fg=fore)
+radio02 = Radiobutton(root, text='Голубой', variable=image, value=False, activebackground=back, bg=back, fg=fore)
+radio01['command'] = is_check_image
+radio02['command'] = is_check_image
 radio01.place(x=150, y=416)
+radio02.place(x=150, y=436)
+
+# параметры изображения
+# ========== И З О Б Р А Ж Е Н И Е ============
+
+# размер поля
+n = 4
+m = 4
+
+# размер полного изображения
+picture_width = 400
+picture_height = 400
+
+# размер одного спрайта
+width_pic = picture_width / n
+height_pic = picture_height / m
+
+# список названий файлов спрайтов
+file_name = ['img01.png',
+             'img02.png',
+             'img03.png',
+             'img04.png',
+             'img05.png',
+             'img06.png',
+             'img07.png',
+             'img08.png',
+             'img09.png',
+             'img10.png',
+             'img11.png',
+             'img12.png',
+             'img13.png',
+             'img14.png',
+             'img15.png',
+             'img16.png',
+             'black.png']
 
 # используемые переменные
 # =========== П Е Р Е М Е Н Н Ы Е =============
-
-# номер пустого поля
-black_img = 0
 
 # список, содержащий расположение текущих спрайтов на поле
 image_background = []
@@ -163,6 +227,17 @@ image_background = []
 # списки для хранения разных скинов
 image_background01 = []
 image_background02 = []
+
+for name in file_name:
+    image_background01.append(PhotoImage(file='image01/' + name))
+    image_background02.append(PhotoImage(file='image02/' + name))
+
+# номер пустого поля
+black_img = 16
+
+# устанавливаем первый набор спрайтов по умолчанию
+# задача - при запуске программы устанавливается скин, который был при закрытии
+image_background = image_background01
 
 #набор виджетов, в которых выводятся спрайты в окне
 label_image = []
@@ -172,6 +247,30 @@ data_image = []
 
 # копия data_image, когда зажата кнопка Посмотреть
 copy_data = []
+
+# наполняем скиски выше
+for i in range(n):
+    label_image.append([])
+    data_image.append([])
+    copy_data.append([])
+
+    for j in range(m):
+        # создаем ряд числе от 1 до 16
+        # это номера собранного паззла
+        data_image[i].append(i * n + j)
+        copy_data[i].append(i * n + j)
+
+        # создаем и настраиваем label, в который будем
+        # выводить спрайты PhotoImag из image_background
+        label_image[i].append(Label(root, bg=back))
+        label_image[i][j]['bd'] = 1
+        label_image[i][j].place(x = 10 + j * width_pic, y = 10 + i * height_pic)
+
+        # что произойдет при нажатии на label
+        label_image[i][j].bind('<Button-1>', lambda e, x=i, y=j: go(x, y))
+
+        # устанавливаем изображение
+        label_image[i][j]['image'] = image_background[data_image[i][j]]
 
 # количество сделанных ходов до полной сборки для разных уровней сложности
 # индекс 0 - сложность 1, индекс 1 - сложность 2 и т.д.
