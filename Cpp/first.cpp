@@ -3,6 +3,8 @@
 #include <iostream>
 
 int main() {
+    int i;
     std::cout << "Hello World!";
-    return 0;
+    std::cin >> i;
+    return i;
 }
